@@ -8,6 +8,7 @@ use Solarium;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Mail\AdminEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ResearcherController extends Controller
 {
@@ -91,12 +92,55 @@ class ResearcherController extends Controller
     }
 
     /**
-     * Salje mail adminu sa odgovarajucim izvestajem,
-     * (name, email, uri, title, note)
+     * Vraca publikacije prema ORCID-u
+     */
+    public function publicationsbyorcid($orcid)
+    {
+        $FRONTEND_URL = env("FRONTEND_URL");
+        
+        $client = new Solarium\Client($this->adapter, $this->eventDispatcher, $this->config);
+        $query = $client->createSelect();
+        $query->setQuery("orcid_id: $orcid");
+        $query->setFields(array('id','orcid_id','value'));
+        $resultset = $client->select($query);
+
+        $authority = null;
+
+        if ($resultset->getNumFound() > 0)
+        {
+            foreach ($resultset as $document)
+                $authority = $document->id;
+                $name = $document->value;
+        }
+
+        if ($authority!=null)
+            return redirect("$FRONTEND_URL/browse/author?value=$name&authority=$authority");
+        else
+            return redirect("$FRONTEND_URL/browse/author");
+    }
+
+
+    /**
+     * Salje mail adminu sa odgovarajucim izvestajem
+     * Mora da sadrzi {name, email, uri, title, note}
      */
     public function ReportErrorInItem(Request $request)
     {
-        Mail::to(env("MAIL_SITE_ADMIN"))->send(new AdminEmail($request));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'uri' => 'required',
+            'title' => 'required',
+            'note' => 'required'
+        ]);
+ 
+        // Vrati gresku ako neko polje nedostaje
+        if ($validator->fails()) return response()->json($request, 422);
+ 
+        // Validiran request
+        $validated = $validator->validated();        
+
+        Mail::to(env("MAIL_SITE_ADMIN"))->send(new AdminEmail($validated));
         return response()->json($request);
     }
 }

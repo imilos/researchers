@@ -21,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/researchers', [ResearcherController::class, 'index']);
 Route::get('/getresearcherbyorcid/{orcid}', [ResearcherController::class, 'getresearcherbyorcid']);
+Route::get('/publicationsbyorcid/{orcid}', [ResearcherController::class, 'publicationsbyorcid']);
 Route::get('/getresearcher/{authority}', [ResearcherController::class, 'getresearcher']);
 Route::post('/reporterrorinitem', [ResearcherController::class, 'ReportErrorInItem']);
