@@ -87,7 +87,7 @@ class ResearcherController extends Controller
             $res = array(
                 'status' => true,
                 'authority' => $authority,
-                'orcid' => $r->orcid
+                'orcid' => $orcid_id
             );
             
             return response()->json($res);
