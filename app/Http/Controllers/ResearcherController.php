@@ -70,7 +70,7 @@ class ResearcherController extends Controller
         $r = Researcher::where('orcid', $orcid_id)->first();
         
         // Ako ima takvog u bazi, vrati podatke
-        if ($r != null && $orcid_id!=null) {
+        if ($r != null) {
             $res = array(
                 'status' => true,
                 'authority' => $authority,
@@ -82,7 +82,7 @@ class ResearcherController extends Controller
             
             return response()->json($res);
         }
-        // Ako ima samo ORCID, vrati ga
+        // Ako ima samo ORCID iz Solr-a, vrati ga
         elseif ($orcid_id!=null) {
             $res = array(
                 'status' => true,
