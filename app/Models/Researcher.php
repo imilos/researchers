@@ -11,5 +11,5 @@ class Researcher extends Model
 
     protected $table = 'researchers';
     protected $fillable = ['orcid', 'ecris', 'scopusid', 'name', 
-                            'email', 'faculty', 'department', 'search_index'];
+                            'email', 'faculty', 'department', 'search_index', 'link'];
 }
