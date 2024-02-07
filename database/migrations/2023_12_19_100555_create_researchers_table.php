@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('faculty')->nullable();
             $table->string('department')->nullable();
             $table->string('search_index')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }

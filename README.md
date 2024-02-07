@@ -38,3 +38,7 @@ Rute koje ovo omogućavaju su sledeće:
 
 ### POST pozivi
 * /reporterrorinitem - Zahteva zahtev oblika npr. `{"name":"Milos Ivanovic","email":"mivanovic@kg.ac.rs","title":"Neka publikacija","uri":"https://scidar.kg.ac.rs/handle/123456789/19735","note":"Pogresan prvi autor"}`
+
+## Swagger dokumentacija
+Swagger dostupan na `http://$host:$port/api/documentation`
+
